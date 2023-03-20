@@ -33,10 +33,10 @@ edit_menu.add_command(label="Paste", command=do_nothing)
 root.config(menu=menu_bar)
 def todo():
     # Open the workbook
-    workbook = openpyxl.load_workbook('example.xlsx')
+    workbook = openpyxl.load_workbook('Plany P15 - v.2 .xlsm', keep_vba=True)
 
     # Get the active worksheet
-    worksheet = workbook.active
+    worksheet = workbook['290 Act. 32']
 
     to_do_lf = LabelFrame(root, text='To-Do', bd=2, relief=RIDGE)
 
@@ -92,7 +92,7 @@ def todo():
     #         done_checkbutton.grid(row=i, column=j+1)
     #     i += 1
 
-    for i, row in enumerate(worksheet.iter_rows(min_row=0, min_col=0, values_only=True)):
+    for i, row in enumerate(worksheet.iter_rows(min_row=5, min_col=5,max_col=9, values_only=True)):
         for j, value in enumerate(row):
             data = ttk.Label(scrollable_frame, width=20, text=value, anchor='center')
             data.grid(row=i, column=j)
@@ -102,6 +102,23 @@ def todo():
             var = BooleanVar()
             def print_selected(var, val, row_index):
                 if var.get() == 1:
+                    root.update_idletasks()
+                    # Load the workbook
+                    workbook = openpyxl.load_workbook('done.xlsx')
+
+                    # # Create a new sheet
+                    # sheet = workbook.create_sheet("Sheet1")
+
+                    # Select the sheet you want to add a record to
+                    sheet = workbook['Sheet']
+
+                    # Add a new record to the sheet
+                    new_record = [worksheet.cell(row=row_index+1, column=1).value, val, 30]
+                    sheet.append(new_record)
+
+                    # Save the workbook
+                    workbook.save('done.xlsx')
+
                     print("Costumer Order:", val)
                     print("Zlecenie Produkcji:", worksheet.cell(row=row_index+1, column=1).value)
 
@@ -121,8 +138,11 @@ separator = ttk.Separator(root, orient='horizontal')
 separator.pack(fill='x', pady=20)
 
 def done():
-    # Create a new workbook
-    workbook = openpyxl.Workbook()
+    # # Create a new workbook
+    # workbook = openpyxl.Workbook()
+
+    # Open the workbook
+    workbook = openpyxl.load_workbook('done.xlsx')
 
     # Get the active worksheet
     worksheet = workbook.active
