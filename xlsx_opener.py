@@ -9,10 +9,10 @@ def main():
     root.state('zoomed') 
     def todo():
         # Open the workbook
-        workbook = openpyxl.load_workbook('example.xlsx', keep_vba=True)
+        workbook = openpyxl.load_workbook('Plany P15 - v.2 .xlsm', keep_vba=True)
 
         # Get the active worksheet
-        worksheet = workbook['Sheet']
+        worksheet = workbook['290 Act. 50']
 
         to_do_lf = LabelFrame(root, text='To-Do', bd=2, relief=RIDGE)
 
@@ -73,7 +73,7 @@ def main():
                         sheet = workbook['Sheet']
 
                         # Add a new record to the sheet
-                        new_record = [worksheet.cell(row=row_index, column=1).value, worksheet.cell(row=row_index, column=2).value, val,]
+                        new_record = [worksheet.cell(row=row_index, column=1).value, worksheet.cell(row=row_index, column=2).value, val]
                         sheet.append(new_record)
 
                         def delete():
@@ -95,9 +95,9 @@ def main():
                         # Save the workbook
                         workbook.save('done.xlsx')
 
-                        print("Costumer Order:", val)
-                        print("Zlecenie Produkcji:", worksheet.cell(row=row_index+1, column=1).value)
-                        print("Quantity:", worksheet.cell(row=row_index+1, column=2).value)
+                        # print("Costumer Order:", val)
+                        # print("Zlecenie Produkcji:", worksheet.cell(row=row_index+1, column=1).value)
+                        # print("Quantity:", worksheet.cell(row=row_index+1, column=2).value)
 
                         
                 done_checkbutton = ttk.Checkbutton(scrollable_frame, variable=var, onvalue=1, offvalue=0, command=lambda var_value=var, val=value, row_index=i: print_selected(var_value, val, row_index))
